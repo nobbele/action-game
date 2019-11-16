@@ -5,7 +5,7 @@
 
 class Entity : public Drawable {
 	public:
-	Entity() : Drawable() {}
+	Entity() : Drawable(0) {}
 };
 
 #endif

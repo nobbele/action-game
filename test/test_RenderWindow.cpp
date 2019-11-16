@@ -12,7 +12,7 @@ TEST_CASE("sf::RenderWindow", "[renderwindow]") {
 
 	REQUIRE(shape.getRadius() == 100.0f);
 	REQUIRE(shape.getFillColor() == sf::Color::White);
-	REQUIRE(static_cast<int>(shape.getLocalBounds().width) == 198); // 🤔
+	REQUIRE(static_cast<int>(shape.getLocalBounds().width) == 198);
 	REQUIRE(static_cast<int>(shape.getLocalBounds().height) == 200);
 
 	sf::Texture shapeTexture;

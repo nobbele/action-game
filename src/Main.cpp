@@ -1,36 +1,25 @@
 #include "Main.hpp"
 #include "Renderer.hpp"
 #include "Entity.hpp"
+#include "EventHandler.hpp"
+#include "GameSystem.hpp"
 
 int main()
 {
-	std::cout << "Hello World!" << std::endl;
-
-	sf::RenderWindow window(sf::VideoMode(640,480), "SFML works!");
-#ifdef SFML_SYSTEM_WINDOWS
-	__windowsHelper.setIcon(window.getSystemHandle());
-#endif
-
-	std::unique_ptr<Renderer> renderer = Renderer::CreateBestRenderer();
-	renderer->Initialize();
+	GameSystem& system = GameSystem::GetInstance();
+	system.renderer->Initialize();
 
 	std::vector<Entity> entities;
 	entities.push_back(Entity());
 
-	sf::Event event;
-	while (window.isOpen())
+	while (system.renderer->IsOpen())
 	{
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
+		system.eventHandler->PollEvents();
 
-		window.clear();
-		for(const auto& entity : entities) {
-			renderer->Render(window, entity);
-		}
-		window.display();
+		system.renderer->StartRender();
+		for(const auto& entity : entities)
+			system.renderer->Draw(entity);
+		system.renderer->EndRender();
 	}
 
 	return 0;
