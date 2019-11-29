@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "Drawable.hpp"
+#include "Graphics/Drawable.hpp"
 
 class Entity : public Drawable {
 	public:

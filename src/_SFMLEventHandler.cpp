@@ -1,6 +1,6 @@
 #include "EventHandler.hpp"
 #include "_SFMLEventHandler.hpp"
-#include "_SFMLRenderer.hpp"
+#include "Graphics/_SFMLRenderer.hpp"
 
 SFMLEventHandler::SFMLEventHandler(Renderer& renderer)
 	: EventHandler(renderer), window(static_cast<SFMLRenderer&>(renderer).window) {

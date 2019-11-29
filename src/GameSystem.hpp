@@ -1,7 +1,7 @@
 #ifndef GAMESYSTEM_H
 #define GAMESYSTEM_H
 
-#include "Renderer.hpp"
+#include "Graphics/Renderer.hpp"
 #include "EventHandler.hpp"
 
 class GameSystem {
