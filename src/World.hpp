@@ -1,7 +1,7 @@
 #ifndef AG_WORLD_H
 #define AG_WORLD_H
 
-class Entity;
+#include "Entity.hpp"
 #include <Box2D/Box2D.h>
 
 class World {

@@ -1,8 +1,8 @@
-#include "Renderer.hpp"
 #include "_SFMLRenderer.hpp"
 #include <SFML/Graphics.hpp>
 #include "GameSystem.hpp"
 #include "EventHandler.hpp"
+#include "Drawable.hpp"
 
 const unsigned int targetWidth = 1920;
 const unsigned int targetHeight = 1080;
@@ -60,7 +60,7 @@ bool SFMLRenderer::IsOpen() {
 	return window.isOpen();
 }
 
-Vector2f SFMLRenderer::GetTextureSize(uint id) {
+Vector2f SFMLRenderer::GetTextureSize(uint id){
     Vector2u size = spriteMap[id].getSize();
     return size;
 }

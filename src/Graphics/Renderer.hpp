@@ -1,7 +1,8 @@
 #ifndef AG_RENDERER_H
 #define AG_RENDERER_H
 
-#include "Drawable.hpp"
+class Drawable;
+#include "Vector2.hpp"
 
 #define PIXELS_PER_METER 100
 
@@ -14,7 +15,7 @@ class Renderer {
 	virtual void Quit() = 0;
 	virtual bool IsOpen() = 0;
 
-	virtual Vector2f GetTextureSize(uint id);
+	virtual Vector2f GetTextureSize(uint id) = 0;
 
 	static std::unique_ptr<Renderer> CreateBestRenderer();
 };

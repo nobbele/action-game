@@ -3,6 +3,7 @@
 
 #include "Vector2.hpp"
 #include "GameSystem.hpp"
+#include "Renderer.hpp"
 
 class Drawable {
 	public:
@@ -11,6 +12,7 @@ class Drawable {
 
 	inline Drawable(int textureId = 0) : TextureId(textureId) {
 		GameSystem& system = GameSystem::GetInstance();
+		auto renderer = system.renderer;
 
 		size = Vector2f(0, 0);
 	}

@@ -1,8 +1,8 @@
 #include "Main.hpp"
+#include "World.hpp"
 #include "Entity.hpp"
 #include "EventHandler.hpp"
 #include "GameSystem.hpp"
-#include "World.hpp"
 #include <Box2D/Box2D.h>
 
 // TODO
