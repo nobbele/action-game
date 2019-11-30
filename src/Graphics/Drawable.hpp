@@ -10,18 +10,13 @@ class Drawable {
 	const int TextureId;
 	Vector2f Scale = Vector2f(1,1);
 
-	inline Drawable(int textureId = 0) : TextureId(textureId) {
-		GameSystem& system = GameSystem::GetInstance();
-		auto renderer = system.renderer;
+	inline Drawable(int textureId = 0) : TextureId(textureId), size(GameSystem::GetInstance().GetRenderer().GetTextureSize(textureId)) { }
 
-		size = Vector2f(0, 0);
-	}
-
-	inline Vector2f GetSize() {
+	inline Vector2f GetSize() const {
 		return size * Scale;
 	}
 
-	virtual Vector2f GetPosition() = 0;
+	virtual Vector2f GetPosition() const = 0;
 
 	private:
 	Vector2f size = Vector2f(0,0);

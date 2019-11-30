@@ -3,16 +3,19 @@
 #include <Box2D/Box2D.h>
 #include "World.hpp"
 
-Entity::Entity(World& world) : Drawable(0) {
-	BodyDef.type = b2_dynamicBody;
-	BodyDef.position.Set(0, 0);
-	b2Body* body = world.PhysicsWorld.CreateBody(&BodyDef);
+Entity::Entity(b2World& world) : Drawable(0) {
+b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(0.0f, 0.0f);
+	Body = world.CreateBody(&bodyDef);
 
-	DynamicBox.SetAsBox(1.0f, 1.0f);
+	b2PolygonShape dynamicBox;
+	dynamicBox.SetAsBox(GetSize().X / PIXELS_PER_METER, GetSize().Y / PIXELS_PER_METER);
 
-	FixtureDef.shape = &DynamicBox;
-	FixtureDef.density = 1.0f;
-	FixtureDef.friction = 0.3f;
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &dynamicBox;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
 
-	body->CreateFixture(&FixtureDef);
+	Body->CreateFixture(&fixtureDef);
 }

@@ -8,7 +8,7 @@ public:
 	sf::Window& window;
 	SFMLEventHandler(Renderer& renderer);
 	void PollEvents();
-	void Raise(EventHandler::Event e);
+	void Raise(EventHandler::Event e, EventHandler::EventParameter&& param);
 };
 
 #endif

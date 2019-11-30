@@ -8,9 +8,19 @@ public:
 	EventHandler(__attribute__((unused)) Renderer& renderer) { }
 
 	enum class Event {
-		Resize
+		Resize, KeyDown
 	};
-	using EventCallbackFunction = std::function<void()>;
+
+	struct EventParameter { };
+	struct KeyEventParameter : public EventParameter {
+		enum class EKey {
+			UNKNOWN, ESC
+		};
+		EKey Key;
+	};
+	struct KeyDownEventParameter : public KeyEventParameter { };
+
+	using EventCallbackFunction = std::function<void(EventParameter&)>;
 	using Subscription = std::unordered_multimap<Event, EventCallbackFunction>::iterator;
 	inline Subscription Subscribe(Event e, EventCallbackFunction callback) {
 		return EventCallbackMap.insert({e, callback});

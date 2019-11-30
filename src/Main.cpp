@@ -5,39 +5,46 @@
 #include "GameSystem.hpp"
 #include <Box2D/Box2D.h>
 
-// TODO
-// Add Box2D
-
 int main()
 {
 	GameSystem& system = GameSystem::GetInstance();
-	system.renderer->Initialize();
+	Renderer& renderer = system.GetRenderer();
+	renderer.Initialize();
+	EventHandler& eventHandler = system.GetEventHandler();
 
-	World world(b2Vec2(0.0f, -9.81f));
-	world.Entities.push_back(Entity(world));
+	World world(b2Vec2(0.0f, 9.81f));
 
-	// Prepare for simulation. Typically we use a time step of 1/60 of a
-	// second (60Hz) and 10 iterations. This provides a high quality simulation
-	// in most game scenarios.
+	b2BodyDef groundBodyDef;
+	groundBodyDef.position.Set(0.0f, 8.0f);
+
+	b2Body* groundBody = world.PhysicsWorld.CreateBody(&groundBodyDef);
+	b2PolygonShape groundBox;
+	groundBox.SetAsBox(1.0f, 1.0f);
+	groundBody->CreateFixture(&groundBox, 0.0f);
+
+	Entity& ent = world.Entities.emplace_back(world.PhysicsWorld);
+	system.GetEventHandler().Subscribe(EventHandler::Event::KeyDown, [&ent](EventHandler::EventParameter& _p) {
+		EventHandler::KeyDownEventParameter& param = (EventHandler::KeyDownEventParameter&)_p;
+		std::cout << param.Key << std::endl;
+		if(param.Key == EventHandler::KeyEventParameter::EKey::ESC) {
+			ent.SetPosition(Vector2f(0, 0));
+		}
+	});
+
 	float32 timeStep = 1.0f / 60.0f;
-	int32 velocityIterations = 6;
-	int32 positionIterations = 2;
+	int32 velocityIterations = 8;
+	int32 positionIterations = 3;
 
-	while (system.renderer->IsOpen())
+	while (renderer.IsOpen())
 	{
-		system.eventHandler->PollEvents();
+		eventHandler.PollEvents();
 
 		world.PhysicsWorld.Step(timeStep, velocityIterations, positionIterations);
 
-		for(auto& entity : world.Entities) {
-			Vector2f pos = (Vector2f)entity.Body->GetPosition() * PIXELS_PER_METER;
-			std::cout << pos << std::endl;
-		}
-
-		system.renderer->StartRender();
+		renderer.StartRender();
 		for(auto& entity : world.Entities)
-			system.renderer->Draw(entity);
-		system.renderer->EndRender();
+			renderer.Draw(entity);
+		renderer.EndRender();
 	}
 
 	return 0;

@@ -23,7 +23,7 @@ __windowsHelper.setIcon(window.getSystemHandle());
     view.setCenter(targetWidth / 2, targetHeight / 2 );
     view = getLetterboxView(view, w, h);
 
-	GameSystem::GetInstance().eventHandler->Subscribe(EventHandler::Event::Resize, [this]() {
+	GameSystem::GetInstance().GetEventHandler().Subscribe(EventHandler::Event::Resize, [this](EventHandler::EventParameter& param) {
 		const auto [w, h] = window.getSize();
 		window.setView(getLetterboxView(window.getView(), w, h));
 	});
@@ -52,6 +52,7 @@ void SFMLRenderer::Draw(Drawable& drawable) {
 }
 void SFMLRenderer::EndRender() {
 	window.display();
+    sf::sleep(sf::seconds(1.0f / 60.0f));
 }
 void SFMLRenderer::Quit() {
 

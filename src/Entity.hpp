@@ -2,20 +2,21 @@
 #define AG_ENTITY_H
 
 #include "Graphics/Drawable.hpp"
-class World;
 #include <Box2D/Box2D.h>
 
 class Entity : public Drawable {
 	public:
-	Entity(World& world);
+	Entity(b2World& world);
 
-	inline Vector2f GetPosition() {
-		b2Vec2 pos = Body->GetPosition();
-		return pos;
+	inline Vector2f GetPosition() const {
+		Vector2f pos = Body->GetPosition();
+		return pos * PIXELS_PER_METER;
 	}
 
-	b2BodyDef BodyDef;
-	b2PolygonShape DynamicBox;
+	inline void SetPosition(Vector2f vec) {
+		Body->SetTransform(vec / PIXELS_PER_METER, Body->GetAngle());
+	}
+
 	b2FixtureDef FixtureDef;
 	b2Body* Body;
 };
