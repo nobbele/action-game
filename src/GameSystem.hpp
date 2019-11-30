@@ -1,17 +1,14 @@
-#ifndef GAMESYSTEM_H
-#define GAMESYSTEM_H
+#ifndef AG_GAMESYSTEM_H
+#define AG_GAMESYSTEM_H
 
-#include "Graphics/Renderer.hpp"
-#include "EventHandler.hpp"
+class Renderer;
+class EventHandler;
 
 class GameSystem {
 public:
 	std::unique_ptr<Renderer> renderer;
 	std::unique_ptr<EventHandler> eventHandler;
 	GameSystem();
-
-	GameSystem(GameSystem const&) = delete;
-    void operator=(GameSystem const&)  = delete;
 
 	static GameSystem& GetInstance();
 };

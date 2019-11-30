@@ -1,5 +1,5 @@
-#ifndef EVENTHANDLER_H
-#define EVENTHANDLER_H
+#ifndef AG_EVENTHANDLER_H
+#define AG_EVENTHANDLER_H
 
 #include "Graphics/Renderer.hpp"
 

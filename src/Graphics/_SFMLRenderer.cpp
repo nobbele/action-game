@@ -2,6 +2,7 @@
 #include "_SFMLRenderer.hpp"
 #include <SFML/Graphics.hpp>
 #include "GameSystem.hpp"
+#include "EventHandler.hpp"
 
 const unsigned int targetWidth = 1920;
 const unsigned int targetHeight = 1080;
@@ -42,16 +43,10 @@ void SFMLRenderer::StartRender() {
 void SFMLRenderer::Draw(Drawable& drawable) {
     sf::Texture tex = spriteMap[drawable.TextureId];
 	renderSprite.setTexture(tex);
-    const sf::Vector2f pos = drawable.Position;
+    const sf::Vector2f pos = drawable.GetPosition();
 	renderSprite.setPosition(pos);
-
-    sf::Vector2u size = tex.getSize();
-    sf::Vector2f scale = renderSprite.getScale();
-    drawable.Size.X = size.x * scale.x;
-    drawable.Size.Y = size.y * scale.y;
-
-    std::cout << "px size: " << drawable.Size << std::endl;
-    std::cout << "m size: " << drawable.Size / PIXELS_PER_METER << std::endl;
+    const sf::Vector2f scale = drawable.Scale;
+    renderSprite.setScale(scale);
 
 	window.draw(renderSprite);
 }
@@ -63,6 +58,11 @@ void SFMLRenderer::Quit() {
 }
 bool SFMLRenderer::IsOpen() {
 	return window.isOpen();
+}
+
+Vector2f SFMLRenderer::GetTextureSize(uint id) {
+    Vector2u size = spriteMap[id].getSize();
+    return size;
 }
 
 // https://github.com/SFML/SFML/wiki/Source%3A-Letterbox-effect-using-a-view

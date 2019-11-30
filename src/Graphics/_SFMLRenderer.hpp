@@ -1,5 +1,5 @@
-#ifndef _SFMLRENDERER_H
-#define _SFMLRENDERER_H
+#ifndef AG_SFMLRENDERER_H
+#define AG_SFMLRENDERER_H
 
 #include "Renderer.hpp"
 
@@ -15,6 +15,7 @@ public:
 	void Quit();
 	bool IsOpen();
 
+	Vector2f GetTextureSize(uint id);
 
 	void ChangeView(unsigned int width, unsigned int height);
 };

@@ -1,5 +1,5 @@
-#ifndef PRECOMPILED_HEADER_HPP
-#define PRECOMPILED_HEADER_HPP
+#ifndef AG_PRECOMPILED_HEADER_HPP
+#define AG_PRECOMPILED_HEADER_HPP
 
 #ifndef _DEBUG
 	#ifndef NDEBUG
@@ -68,4 +68,4 @@
 // Macros
 #define _UNUSED(x) (void)(x)
 
-#endif // PRECOMPILED_HEADER_HPP
+#endif

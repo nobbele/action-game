@@ -1,5 +1,5 @@
-#ifndef MAIN_HPP
-#define MAIN_HPP
+#ifndef AG_MAIN_HPP
+#define AG_MAIN_HPP
 
 #ifdef __APPLE__
 	#include "MacOS/MacHelper.hpp"

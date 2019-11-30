@@ -1,5 +1,5 @@
-#ifndef _SFMLEVENTHANDLER_H
-#define _SFMLEVENTHANDLER_H
+#ifndef AG_SFMLEVENTHANDLER_H
+#define AG_SFMLEVENTHANDLER_H
 
 #include "EventHandler.hpp"
 
