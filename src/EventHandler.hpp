@@ -11,16 +11,18 @@ public:
 		Resize, KeyDown
 	};
 
-	struct EventParameter { };
-	struct KeyEventParameter : public EventParameter {
-		enum class EKey {
-			UNKNOWN, ESC
-		};
-		EKey Key;
+	struct EventParameter {
+		virtual ~EventParameter() = default;
 	};
-	struct KeyDownEventParameter : public KeyEventParameter { };
+	enum class EKey {
+		UNKNOWN, ESC, SPACE, A, D
+	};
+	struct KeyDownEventParameter : public EventParameter {
+		KeyDownEventParameter(EKey key) : key(key) {}
+		EKey key;
+	};
 
-	using EventCallbackFunction = std::function<void(EventParameter&)>;
+	using EventCallbackFunction = std::function<void(const EventParameter&)>;
 	using Subscription = std::unordered_multimap<Event, EventCallbackFunction>::iterator;
 	inline Subscription Subscribe(Event e, EventCallbackFunction callback) {
 		return EventCallbackMap.insert({e, callback});
@@ -30,9 +32,13 @@ public:
 	}
 	virtual void PollEvents() = 0;
 
+	std::map<EKey, bool> KeyMap;
+
 	static std::unique_ptr<EventHandler> CreateBestEventHandler(Renderer& renderer);
 protected:
 	std::unordered_multimap<Event, EventCallbackFunction> EventCallbackMap;
 };
+
+std::ostream& operator<<(std::ostream& os, const EventHandler::EKey key);
 
 #endif

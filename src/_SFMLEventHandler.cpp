@@ -7,36 +7,49 @@ SFMLEventHandler::SFMLEventHandler(Renderer& renderer)
 
 }
 
-void SFMLEventHandler::Raise(EventHandler::Event e, EventHandler::EventParameter&& param) {
+void SFMLEventHandler::Raise(EventHandler::Event e, const EventHandler::EventParameter&& param) {
 	const auto [start, end] = EventCallbackMap.equal_range(e);
 	for(auto it = start; it != end; it++) {
 		it->second(param);
 	}
 }
 
-EventHandler::KeyDownEventParameter sfToAgKeyDownEvent(sf::Event::KeyEvent e);
+EventHandler::EKey sfToAgKey(sf::Event::KeyEvent e);
 
 void SFMLEventHandler::PollEvents() {
 	sf::Event event;
 	while (window.pollEvent(event)) {
-		if (event.type == sf::Event::Closed)
+		if (event.type == sf::Event::Closed) {
 			window.close();
-		else if (event.type == sf::Event::Resized)
+		} else if (event.type == sf::Event::Resized) {
 			Raise(EventHandler::Event::Resize, EventHandler::EventParameter());
-		else if (event.type == sf::Event::KeyPressed)
-			Raise(EventHandler::Event::KeyDown, static_cast<EventHandler::EventParameter>(sfToAgKeyDownEvent(event.key)));
+		} else if (event.type == sf::Event::KeyPressed) {
+			EventHandler::EKey key = sfToAgKey(event.key);
+			KeyMap[key] = true;
+			Raise(EventHandler::Event::KeyDown, EventHandler::KeyDownEventParameter { key });
+		} else if (event.type == sf::Event::KeyReleased) {
+			EventHandler::EKey key = sfToAgKey(event.key);
+			KeyMap[key] = false;
+		}
 	}
 }
 
-EventHandler::KeyDownEventParameter sfToAgKeyDownEvent(sf::Event::KeyEvent e) {
-	EventHandler::KeyDownEventParameter param;
+EventHandler::EKey sfToAgKey(sf::Event::KeyEvent e) {
 	switch(e.code) {
 		case sf::Keyboard::Key::Escape: {
-			param.Key = EventHandler::KeyEventParameter::EKey::ESC;
+			return EventHandler::EKey::ESC;
+		} break;
+		case sf::Keyboard::Key::Space: {
+			return EventHandler::EKey::SPACE;
+		} break;
+		case sf::Keyboard::Key::A: {
+			return EventHandler::EKey::A;
+		} break;
+		case sf::Keyboard::Key::D: {
+			return EventHandler::EKey::D;
 		} break;
 		default: {
-			param.Key = EventHandler::KeyEventParameter::EKey::UNKNOWN;
+			return EventHandler::EKey::UNKNOWN;
 		} break;
 	}
-	return param;
 }

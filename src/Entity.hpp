@@ -4,10 +4,10 @@
 #include "Graphics/Drawable.hpp"
 #include <Box2D/Box2D.h>
 
+class World;
+
 class Entity : public Drawable {
 	public:
-	Entity(b2World& world);
-
 	inline Vector2f GetPosition() const {
 		Vector2f pos = Body->GetPosition();
 		return pos * PIXELS_PER_METER;
