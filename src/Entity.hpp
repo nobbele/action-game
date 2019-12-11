@@ -17,11 +17,25 @@ class Entity : public Drawable {
 	inline Vector2f GetVelocity() const {
 		return Body->GetLinearVelocity();
 	}
+	inline Vector2f GetCenter() const {
+		return Body->GetWorldCenter();
+	}
 
 	inline void SetPosition(Vector2f vec) {
 		Body->SetTransform(vec / PIXELS_PER_METER, Body->GetAngle());
 	}
+	inline void SetVelocity(Vector2f vec) {
+		Body->SetLinearVelocity(vec);
+	}
+	inline void ApplyLinearImpulse(Vector2f vec, bool wake = true) {
+		Body->ApplyLinearImpulse(vec, GetCenter(), wake);
+	}
 
+	inline void SetBody(b2Body* body)  {
+		Body = body;
+	}
+
+	protected:
 	b2FixtureDef FixtureDef;
 	b2Body* Body;
 };

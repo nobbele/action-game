@@ -5,7 +5,7 @@
 #include "GameSystem.hpp"
 #include <Box2D/Box2D.h>
 
-void createGround(World& world) {
+static void createGround(World& world) {
 	b2BodyDef groundBodyDef;
 	groundBodyDef.type = b2_staticBody;
 	groundBodyDef.position.Set(0.0f, 7.0f);
@@ -41,7 +41,7 @@ int main()
 
 	eventHandler.Subscribe(EventHandler::Event::KeyDown, [&ent, &eventHandler, jumpSpeed](const EventHandler::EventParameter& e) {
 		if(static_cast<const EventHandler::KeyDownEventParameter&>(e).key == EventHandler::EKey::SPACE) {
-			ent.Body->ApplyLinearImpulse(b2Vec2(0,-jumpSpeed), ent.Body->GetWorldCenter() , true);
+			ent.ApplyLinearImpulse(b2Vec2(0,-jumpSpeed));
 		}
 	});
 
@@ -56,10 +56,10 @@ int main()
 		Vector2f vel = ent.GetVelocity();
 
 		if(eventHandler.KeyMap[EventHandler::EKey::D]) {
-			ent.Body->SetLinearVelocity(b2Vec2(speed, vel.Y));
+			ent.SetVelocity(b2Vec2(speed, vel.Y));
 		}
 		else if(eventHandler.KeyMap[EventHandler::EKey::A]) {
-			ent.Body->SetLinearVelocity(b2Vec2(-speed, vel.Y));
+			ent.SetVelocity(b2Vec2(-speed, vel.Y));
 		}
 
 		world.PhysicsWorld.Step(timeStep, velocityIterations, positionIterations);

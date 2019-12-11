@@ -17,8 +17,10 @@ Entity& World::CreateEntity() {
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 1.0f;
 
-	entity.Body = this->PhysicsWorld.CreateBody(&bodyDef);
-	entity.Body->CreateFixture(&fixtureDef);
+	b2Body* body = this->PhysicsWorld.CreateBody(&bodyDef);
+	body->CreateFixture(&fixtureDef);
+
+	entity.SetBody(body);
 
 	return entity;
 }
