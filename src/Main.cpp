@@ -5,15 +5,7 @@
 #include "GameSystem.hpp"
 #include <Box2D/Box2D.h>
 
-int main()
-{
-	GameSystem& system = GameSystem::GetInstance();
-	Renderer& renderer = system.GetRenderer();
-	renderer.Initialize();
-	EventHandler& eventHandler = system.GetEventHandler();
-
-	World world(b2Vec2(0.0f, 9.81f));
-
+void createGround(World& world) {
 	b2BodyDef groundBodyDef;
 	groundBodyDef.type = b2_staticBody;
 	groundBodyDef.position.Set(0.0f, 7.0f);
@@ -29,14 +21,26 @@ int main()
 	fixtureDef.friction = 1.0f;
 
 	groundBody->CreateFixture(&fixtureDef);
+}
+
+int main()
+{
+	GameSystem& system = GameSystem::GetInstance();
+	Renderer& renderer = system.GetRenderer();
+	renderer.Initialize();
+	EventHandler& eventHandler = system.GetEventHandler();
+
+	World world(b2Vec2(0.0f, 9.81f));
+
+	createGround(world);
 
 	Entity& ent = world.CreateEntity();
 
-	const int speed = 10;
-	const int jumpSpeed = 100;
+	const int speed = 5;
+	const int jumpSpeed = 150;
 
-	eventHandler.Subscribe(EventHandler::Event::KeyDown, [&ent, &eventHandler, jumpSpeed](const EventHandler::EventParameter&) {
-		if(eventHandler.KeyMap[EventHandler::EKey::SPACE]) {
+	eventHandler.Subscribe(EventHandler::Event::KeyDown, [&ent, &eventHandler, jumpSpeed](const EventHandler::EventParameter& e) {
+		if(static_cast<const EventHandler::KeyDownEventParameter&>(e).key == EventHandler::EKey::SPACE) {
 			ent.Body->ApplyLinearImpulse(b2Vec2(0,-jumpSpeed), ent.Body->GetWorldCenter() , true);
 		}
 	});
@@ -49,11 +53,13 @@ int main()
 	{
 		eventHandler.PollEvents();
 
+		Vector2f vel = ent.GetVelocity();
+
 		if(eventHandler.KeyMap[EventHandler::EKey::D]) {
-			ent.Body->ApplyLinearImpulse(b2Vec2(speed,0), ent.Body->GetWorldCenter() , true);
+			ent.Body->SetLinearVelocity(b2Vec2(speed, vel.Y));
 		}
 		else if(eventHandler.KeyMap[EventHandler::EKey::A]) {
-			ent.Body->ApplyLinearImpulse(b2Vec2(-speed,0), ent.Body->GetWorldCenter() , true);
+			ent.Body->SetLinearVelocity(b2Vec2(-speed, vel.Y));
 		}
 
 		world.PhysicsWorld.Step(timeStep, velocityIterations, positionIterations);

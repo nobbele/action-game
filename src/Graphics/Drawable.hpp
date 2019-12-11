@@ -17,6 +17,7 @@ class Drawable {
 	}
 
 	virtual Vector2f GetPosition() const = 0;
+	virtual float GetRotation() const = 0;
 
 	private:
 	Vector2f size = Vector2f(0,0);

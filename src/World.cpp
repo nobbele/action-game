@@ -6,6 +6,8 @@ Entity& World::CreateEntity() {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(0.0f, 0.0f);
+	bodyDef.fixedRotation = true;
+	bodyDef.angularDamping = 0.1f;
 
 	b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(entity.GetSize().X / PIXELS_PER_METER, entity.GetSize().Y / PIXELS_PER_METER);

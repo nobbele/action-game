@@ -40,13 +40,20 @@ void SFMLRenderer::StartRender() {
 	window.clear();
 	renderSprite.setTexture(background);
 	renderSprite.setPosition(sf::Vector2f(0,0));
+    renderSprite.setRotation(0);
+    renderSprite.setScale(sf::Vector2f(1,1));
 	window.draw(renderSprite);
 }
 void SFMLRenderer::Draw(Drawable& drawable) {
     sf::Texture tex = spriteMap[drawable.TextureId];
-	renderSprite.setTexture(tex);
+    renderSprite.setTexture(tex);
+
+    const float rotation = drawable.GetRotation();
+    renderSprite.setRotation(rotation);
+
     const sf::Vector2f pos = drawable.GetPosition();
 	renderSprite.setPosition(pos);
+
     const sf::Vector2f scale = drawable.Scale;
     renderSprite.setScale(scale);
 

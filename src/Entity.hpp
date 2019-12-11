@@ -9,8 +9,13 @@ class World;
 class Entity : public Drawable {
 	public:
 	inline Vector2f GetPosition() const {
-		Vector2f pos = Body->GetPosition();
-		return pos * PIXELS_PER_METER;
+		return Vector2f(Body->GetPosition()) * PIXELS_PER_METER;
+	}
+	inline float GetRotation() const {
+		return (Body->GetAngle() * 180) / 3.14159265358979f;
+	}
+	inline Vector2f GetVelocity() const {
+		return Body->GetLinearVelocity();
 	}
 
 	inline void SetPosition(Vector2f vec) {
