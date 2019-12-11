@@ -8,8 +8,6 @@ class World {
 public:
 	inline World(b2Vec2 grav) : PhysicsWorld(grav) {}
 
-	Entity& CreateEntity();
-
 	std::vector<Entity> Entities;
 	b2World PhysicsWorld;
 };

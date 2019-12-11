@@ -4,7 +4,21 @@
 #include "Graphics/Drawable.hpp"
 #include <Box2D/Box2D.h>
 
-class World;
+struct Drawing {
+	int textureId;
+	Vector2f scale;
+};
+
+struct Positioning {
+	Vector2f velocity;
+	Vector2f position;
+	float angle;
+};
+
+struct EntityPhysics {
+	b2Body* body;
+	float mass;
+};
 
 class Entity : public Drawable {
 	public:
@@ -19,6 +33,9 @@ class Entity : public Drawable {
 	}
 	inline Vector2f GetCenter() const {
 		return Body->GetWorldCenter();
+	}
+	inline b2Body* GetBody() const {
+		return Body;
 	}
 
 	inline void SetPosition(Vector2f vec) {

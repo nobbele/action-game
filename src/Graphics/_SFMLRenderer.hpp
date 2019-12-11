@@ -10,12 +10,12 @@ public:
 	sf::RenderWindow window = sf::RenderWindow(sf::VideoMode(1280,720), "Action Game");
 	void Initialize();
 	void StartRender();
-	void Draw(Drawable& drawable);
+	void Draw(entt::registry& reg);
 	void EndRender();
 	void Quit();
 	bool IsOpen();
 
-	Vector2f GetTextureSize(uint id);
+	Vector2f GetTextureSize(uint id) const;
 
 	void ChangeView(unsigned int width, unsigned int height);
 };

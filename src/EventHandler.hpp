@@ -2,6 +2,7 @@
 #define AG_EVENTHANDLER_H
 
 #include "Graphics/Renderer.hpp"
+#include <entt/entity/registry.hpp>
 
 class EventHandler {
 public:
@@ -30,13 +31,17 @@ public:
 	inline void Unsubscribe(Subscription sub) {
 		EventCallbackMap.erase(sub);
 	}
-	virtual void PollEvents() = 0;
+	virtual void PollEvents(entt::registry& reg) = 0;
 
 	std::map<EKey, bool> KeyMap;
 
 	static std::unique_ptr<EventHandler> CreateBestEventHandler(Renderer& renderer);
 protected:
 	std::unordered_multimap<Event, EventCallbackFunction> EventCallbackMap;
+};
+
+struct KeyDownEventHandler {
+	std::function<void(const EventHandler::KeyDownEventParameter&)> f;
 };
 
 std::ostream& operator<<(std::ostream& os, const EventHandler::EKey key);

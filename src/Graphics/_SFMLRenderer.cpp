@@ -3,6 +3,7 @@
 #include "GameSystem.hpp"
 #include "EventHandler.hpp"
 #include "Drawable.hpp"
+#include "Entity.hpp"
 
 const unsigned int targetWidth = 1920;
 const unsigned int targetHeight = 1080;
@@ -44,20 +45,14 @@ void SFMLRenderer::StartRender() {
     renderSprite.setScale(sf::Vector2f(1,1));
 	window.draw(renderSprite);
 }
-void SFMLRenderer::Draw(Drawable& drawable) {
-    sf::Texture tex = spriteMap[drawable.TextureId];
-    renderSprite.setTexture(tex);
-
-    const float rotation = drawable.GetRotation();
-    renderSprite.setRotation(rotation);
-
-    const sf::Vector2f pos = drawable.GetPosition();
-	renderSprite.setPosition(pos);
-
-    const sf::Vector2f scale = drawable.Scale;
-    renderSprite.setScale(scale);
-
-	window.draw(renderSprite);
+void SFMLRenderer::Draw(entt::registry& reg) {
+    reg.view<Positioning, Drawing>().each([this](const Positioning& positioning, const Drawing& drawing) {
+        renderSprite.setTexture(spriteMap[drawing.textureId]);
+        renderSprite.setScale(drawing.scale);
+        renderSprite.setRotation(positioning.angle);
+        renderSprite.setPosition(positioning.position * PIXELS_PER_METER);
+        window.draw(renderSprite);
+    });
 }
 void SFMLRenderer::EndRender() {
 	window.display();
@@ -70,8 +65,8 @@ bool SFMLRenderer::IsOpen() {
 	return window.isOpen();
 }
 
-Vector2f SFMLRenderer::GetTextureSize(uint id){
-    Vector2u size = spriteMap[id].getSize();
+Vector2f SFMLRenderer::GetTextureSize(uint id) const {
+    Vector2u size = spriteMap.at(id).getSize();
     return size;
 }
 

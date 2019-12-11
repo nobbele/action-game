@@ -7,7 +7,7 @@ SFMLEventHandler::SFMLEventHandler(Renderer& renderer)
 
 }
 
-void SFMLEventHandler::Raise(EventHandler::Event e, const EventHandler::EventParameter&& param) {
+void SFMLEventHandler::Raise(EventHandler::Event e, const EventHandler::EventParameter& param) {
 	const auto [start, end] = EventCallbackMap.equal_range(e);
 	for(auto it = start; it != end; it++) {
 		it->second(param);
@@ -16,7 +16,7 @@ void SFMLEventHandler::Raise(EventHandler::Event e, const EventHandler::EventPar
 
 EventHandler::EKey sfToAgKey(sf::Event::KeyEvent e);
 
-void SFMLEventHandler::PollEvents() {
+void SFMLEventHandler::PollEvents(entt::registry& reg) {
 	sf::Event event;
 	while (window.pollEvent(event)) {
 		if (event.type == sf::Event::Closed) {
@@ -26,7 +26,11 @@ void SFMLEventHandler::PollEvents() {
 		} else if (event.type == sf::Event::KeyPressed) {
 			EventHandler::EKey key = sfToAgKey(event.key);
 			KeyMap[key] = true;
-			Raise(EventHandler::Event::KeyDown, EventHandler::KeyDownEventParameter { key });
+			EventHandler::KeyDownEventParameter p = EventHandler::KeyDownEventParameter { key };
+			Raise(EventHandler::Event::KeyDown, p);
+			reg.view<KeyDownEventHandler>().each([p](const KeyDownEventHandler& f) {
+				f.f(p);
+			});
 		} else if (event.type == sf::Event::KeyReleased) {
 			EventHandler::EKey key = sfToAgKey(event.key);
 			KeyMap[key] = false;
